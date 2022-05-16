@@ -2,7 +2,7 @@
 
 Crearemos un repositorio espejo para poder actualizar los páquetes de Oracle Linux 6.
 
-URL = repo.datapar.com
+URL = repo.xxx.com
 
 ## A continuación debemos de realizar las siguientes configuraciónes
 
@@ -120,8 +120,8 @@ Para verificar que nuestro repositorio funciona realizamos lo siguiente:
 ```
 [oraclerpms]
 name=Oracle Linux $releasever Latest ($basearch)
-baseurl=http://repo.datapar.com/OEL_repo/OEL6/latest/$basearch/
-gpgkey=http://repo.datapar.com/RPM-GPG-KEY-oracle-ol6
+baseurl=http://repo.xxxx.com/OEL_repo/OEL6/latest/$basearch/
+gpgkey=http://repo.xxxx.com/RPM-GPG-KEY-oracle-ol6
 gpgcheck=1
 enabled=1
 ```
@@ -162,7 +162,7 @@ Repo-revision: 1652701519
 Repo-updated : Mon May 16 08:05:06 2022
 Repo-pkgs    : 10.131
 Repo-size    : 28 G
-Repo-baseurl : http://repo.datapar.com/OEL_repo/OEL6/latest/x86_64/
+Repo-baseurl : http://repo.xxxx.com/OEL_repo/OEL6/latest/x86_64/
 Repo-expire  : 21.600 second(s) (last: Mon May 16 09:40:38 2022)
 
 repolist: 20.413
