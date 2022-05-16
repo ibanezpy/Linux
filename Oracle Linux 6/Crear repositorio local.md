@@ -2,7 +2,7 @@
 
 Crearemos un repositorio espejo para poder actualizar los páquetes de Oracle Linux 6.
 
-URL = repo.xxx.com
+URL = repo.xxxx.com
 
 ## A continuación debemos de realizar las siguientes configuraciónes
 
