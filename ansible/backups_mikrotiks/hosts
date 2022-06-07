@@ -1,0 +1,8 @@
+[RouterDatapar]
+172.27.0.1      ansible_user=<user> ansible_password=<password> ansible_network_os=routeros
+172.27.0.2      ansible_user=<user> ansible_password=<password> ansible_network_os=routeros
+172.27.0.10     ansible_user=<user> ansible_password=<password> ansible_network_os=routeros
+172.27.0.11     ansible_user=<user> ansible_password=<password> ansible_network_os=routeros
+172.27.0.13     ansible_user=<user> ansible_password=<password> ansible_network_os=routeros
+172.27.0.14     ansible_user=<user> ansible_password=<password> ansible_network_os=routeros
+172.27.0.26     ansible_user=<user> ansible_password=<password> ansible_network_os=routeros
