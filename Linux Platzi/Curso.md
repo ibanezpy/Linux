@@ -329,3 +329,51 @@ Ejecutar el siguiente comando para reiniciar el servicio de ssh:
 ```
 sudo service sshd restart
 ```
+
+## **Arranque, detención y recarga de servicios**
+
+### **Comandos**
+
+* **sudo systemctl status servicio**: Estado de un servicio.
+* **sudo systemctl enable servicio**: Habilita un servicio.
+* **sudo systemctl disable servicio**: Deshabilita un servicio.
+* **sudo systemctl start servicio**: Enciende un servicio.
+* **sudo systemctl stop servicio**: Apaga un servicio.
+* **sudo systemctl restart servicio**: Reinicia un servicio.
+* **sudo systemctl list-units -t service --all**: Lista los servicios del sistema.
+* **sudo journalctl -fu servicio**: Muestra el log de un servicio.
+* **sudo journalctl --disk-usage**: Muestra cuanto pesan los logs en el sistema operativo.
+* **sudo journalctl --list-boots**: Muestra los booteos de la computadora.
+* **sudo journalctl -p critic|notice|info|warning|error**: Muestra mensajes de determinada categoría de nuestros logs.
+* **sudo journalctl -o json**: Muestra los logs en formato json.
+
+## **Los logs, nuestros mejores amigos**
+
+### **Comandos**
+
+ * **find [ruta]**: Buscar algo en el sistema operativo.
+   * **-type**: Indica que tipo estamos buscando; archivos, directorios y enlaces
+   * **-name**: Indica el nombre de lo que estamos buscando
+   * **-iname**: Indica el nombre de lo que estamos buscando, pero sin tener en cuenta mayúsculas y minúsculas
+   * **!**: Niega la expresión que buscamos (es decir, busca lo contrario)
+   * **-mtime**: Muestra archivos con cambios en los últimos n minutos
+ * **grep [string] [archivo]**: Busca una cadena de caracteres o expresión regular en un archivo determinado. Si ejecutamos por ejemplo algo como comando | grep [string] vamos a filtrar el resultado de un comando por la cadena o regex que especifiquemos
+ * **awk**: Es un lenguaje que nos ayuda a filtrar patrones en un archivo, organizarlos y darles formato
+
+### **Comandos útiles**
+Muestra los archivos de log que tenemos en el sistema
+```
+find /var/log/ -iname "*.log" -type f**: 
+```
+Muestra los archivos de configuración que tuvieron salidas de error en los últimos diez minutos.
+```
+sudo find /etc/ -mtime 10 2
+```
+Muestra las IP’s que se conectaron con nuestro servidor nginx.
+```
+awk '{print $1}' /var/log/nginx/access.log | sort | uniq -c | sort -nr
+```
+Muestra los errores que surgieron en nuestro servidor nginx
+```
+awk '{print $9}' /var/log/nginx/access.log | sort | uniq -c | sort -nr
+```
