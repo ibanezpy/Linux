@@ -170,3 +170,162 @@ Repositorios apt otra forma de instalar.
  * **sudo snap install paquete**: Instala un paquete con el nuevo gestor de paquetes de Canonical, snap
  * **date**: Imprime la fecha actual.
  * **sudo dpkg-reconfigure tzdata**: reconfigurar la zona horaria.
+
+## **Nagios: Desempaquetado, descompresión, compilación e instalación de paquetes**
+
+### **Instalar los siguientes paquetes**
+```
+sudo apt install build-essential libgd-dev openssl libssl-dev unzip apache2 php gcc libdbi-perl libdbd-mysql-perl
+```
+
+Descargar Nagios 
+```
+wget https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.4.tar.gz -O nagioscore.tar.gz
+```
+
+Descomprimir y desempaquetar el archivo descargado
+```
+tar xvzf nagioscore.tar.gz
+```
+
+Configurar e instalar (en la carpeta donde se descomprimieron los archivos) a Nagios
+```
+cd nagios-4.4.4/
+sudo ./configure --with-https-conf=/etc/apache2/sites-enabled
+sudo make all
+sudo make install
+```
+
+Si no les funciona "sudo make install" continuar con los siguientes comandos y ejecutar luego "sudo make install"
+```
+sudo make install-groups-users
+sudo usermod -a -G nagios www-data
+```
+
+```
+sudo make install-init
+sudo make install-commandmode
+sudo make install-config
+sudo make install-webconf
+```
+
+Activar el servicio de Nagios
+```
+sudo systemctl start nagios
+```
+
+BONUS: instalar plugins de Nagios
+```
+wget https://nagios-plugins.org/download/nagios-plugins-2.2.1.tar.gz -O nagios-plugins.tar.gz
+tar xzvf nagios-plugins.tar.gz
+cd nagios-plugins-2.2.1
+sudo ./configure
+sudo make all
+sudo make install
+```
+
+
+## **Los usuarios, una tarea vital en el proceso de administración del sistema operativo**
+### **Comandos**
+
+* **id**: Muestra el identificador único de mi usuario, del grupo al que pertenezco y los grupos de los cuales formo parte
+* **whoami**: Muestra que usuario soy
+* **passwd**: Cambia la contraseña del usuario actual
+
+### **Comandos útiles**
+Muestra todos los usuarios del sistema operativo
+```
+cat /etc/passwd
+```
+Muestra las contraseñas del sistema operativo
+```
+cat /etc/shadow
+```
+
+## **Creando y manejando cuentas de usuario en el sistema operativo**
+
+### **Comandos**
+
+ * **sudo useradd usuario**: Crea un usuario
+ * **sudo adduser usuario**: Crea un usuario y solicita un password, además de otros datos
+ * **sudo userdel usuario**: Borra un usuario
+ * **history**: Muestra todos los comandos usados anteriormente
+ * **sudo usermod**: Modifica un usuario
+
+### **Comandos útiles**
+Muestra el contenido de un comando.
+```
+cat /usr/sbin/nombre_de_comando
+```
+
+## **Entendiendo la membresía de los grupos**
+
+### **Comandos**
+
+* **su - usuario**: Switch User, cambia de usuario
+* **groups usuario**: Muestra a que grupos pertenece cierto usuario
+* **sudo gpasswd -a usuario grupo**: Agrega un usuario a un grupo
+* **sudo gpasswd -d usuario grupo**: Quita a un usuario de un grupo
+* **usermod -aG grupo usuario**: Agrega un usuario a un grupo
+* **sudo -l**: Muestra que permisos tiene el usuario actual
+
+## **Usando PAM para el control de acceso de usuarios**
+
+### **Comandos**
+
+ * **pwscore**: Evalúa si una contraseña es buena o mala del 0 al 100
+ * **ulimit**: Muestra los permisos que tiene el usuario actual. Modificadores: -u numero: Cambia la cantidad de procesos que mi usuario puede ejecutar.
+
+### **Comandos útiles**
+Modifica el archivo que indica en que horarios pueden conectarse ciertos usuarios.
+```
+sudo vi /etc/security/time.conf
+
+#Agregamos está linea.
+*;*;ponky|nodejs;Wk0800-1800
+```
+
+
+## **Autenticación de clientes y servidores sobre SSH**
+
+
+**SSH**: Secure Shell, es un protocolo que permite conectar dos computadoras de forma remota sin necesidad de un password, únicamente con la interacción de una llave pública y una llave privada (aunque podemos colocar una contraseña sobre las llaves)
+
+### **Configuración**
+
+ * En el servidor, abrir el archivo /etc/ssh/sshd_config con algún editor. Leer el archivo y configurar a gusto.
+ * En la consola de la máquina cliente abrir ssh-keygen para generar las llaves
+ * Elegir ubicación para guardar la llave privada
+ * Ejecutar 
+   ```
+   ssh-copy-id -i directorio_de_llave/id_rsa.pub nombre_usuario@direccion_ip_del_servidor
+   ```
+ * Ejecutar 
+   ```
+   ssh nombre_usuario@direccion_ip_del_servidor 
+   ```
+
+### **Tips**
+
+
+* En lugar de descargar Putty en Windows podemos utilizar el emulador de consola Unix llamado Cmder para ejecutar los comandos vistos en clase. Incluso si esto falla, lo que personalmente recomiendo es instalar un subsistema de linux si tenemos Windows 10. Platzi tiene incluso un artículo sobre como hacer eso: https://platzi.com/clases/1378-python-practico/19200-importante-instalando-ubuntu-bash-en-windows-para-/
+* Si la conexión falla, podemos usar el modificador -v (verbose) en el comando ssh para poder ver la información que envían las máquinas que intentan conectarse. La “v” puede repetirse hasta cuatro veces, quedando el comando, por ejemplo, como(a mas “v” pongamos, más información se mostrará):
+   ```
+   ssh -vvvv nombre_usuario@direccion_ip_del_servidor
+   ```
+
+### **BONUS**
+
+**Reto**: Restringir el acceso al usuario root por ssh, y permitir solo un usuario determinado conectado
+
+**Solución**:
+
+Colocar en el archivo /etc/ssh/sshd_config del servidor las siguientes líneas:
+```
+PermitRootLogin no
+AllowUsers nombre_usuario
+```
+Ejecutar el siguiente comando para reiniciar el servicio de ssh:
+```
+sudo service sshd restart
+```
