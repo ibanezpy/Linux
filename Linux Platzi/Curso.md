@@ -377,3 +377,76 @@ Muestra los errores que surgieron en nuestro servidor nginx
 ```
 awk '{print $9}' /var/log/nginx/access.log | sort | uniq -c | sort -nr
 ```
+
+## **Entendiendo la gestión de vulnerabilidades**
+
+### **Malas prácticas**
+
+* No desactivar el usuario root
+* Realizar un login con usuario y password (sin ssh)
+* No validar la versión de software usada
+* Utilizar comandos r* o telnet
+* No identificar los servicios y puertos abiertos en el S.O
+* No gestionar correctamente los permisos de los usuarios
+
+### **Buenas prácticas** 
+
+* Verificar las actualizaciones de seguridad y realizar la instalación de las mismas.
+
+* En CentOS:
+```
+yum check-update --security
+yum update security
+```
+* En Ubuntu:
+```
+apt update
+apt upgrade
+```
+
+## **¿Qué es una superficie de ataque? Principio del menor privilegio**
+
+Una superficie de ataque es el conjunto de datos conocidos o vulnerabilidades que pueden ser explotados por un atacante informático.
+
+Software útil para la gestión de vulnerabilidades
+
+ * Lynis: Analiza nuestro servidor y nos da recomendaciones
+
+Manuales y frameworks útiles para la seguridad de nuestro servidor
+
+* SCAP: El Security Content Automation Protocol es un conjunto de reglas sobre la expresión y manipulación de información relacionada con configuraciones y fallos.
+* OWASP: El Open Web Application Security Project es un proyecto de código abierto destinado a pelear contra la inseguridad informática.
+
+## **El firewall y sus reglas**
+
+### **Comandos**
+
+* **sudo ufw status**: Muestra el estado (activo/inactivo) y las reglas del firewall. Con el modificador numbered me muestra las reglas numeradas
+* **sudo ufw allow puerto**: Habilita un puerto
+* **sudo ufw enable**: Enciende el firewall
+* **sudo ufw delete numero_de_regla**: Borra una regla
+* **sudo ufw allow from direccion_ip proto protocolo to any port puerto**: Restringe las direcciones ip que pueden conectarse a cierto puerto. Recordar que SSH trabaja con el protocolo TCP
+* **sudo ufw reset**: Elimina todas las reglas
+
+### **Recomendación**
+
+Abrir al público únicamente el puerto 80 (http), 443 (https). Para un conjunto de IP’s específicas, habilitar el puerto 22 (ssh)
+
+## **Escaneo de puertos con NMAP y NIKTO desde Kali Linux**
+
+### **Comandos**
+Realiza un mapeo de la red
+```
+nmap -sV -sC -0 -oA nombre_de_archivo dirección_ip_del_servidor
+```
+Escanea vulnerabilidades en un servidor
+```
+nikto -h ip_del_host -o nombre_de_archivo
+```
+
+## **Lynis: Herramientas de auditoria de seguridad en Linux**
+
+### **Comandos**
+
+* **sudo lynis audit system**: Realiza un escaneo del sistema operativo, mostrándonos sugerencias y el estado de peligro de ciertos detalles en nuestra distribución
+
